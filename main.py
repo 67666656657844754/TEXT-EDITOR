@@ -10,11 +10,17 @@ root.geometry("650x550+90+90")
 root.config(bg="white")
 
 
+fltype = [
+["Text files", "*.txt"],
+["Markdown files", "*.md"], 
+["All files", "*.*"]
+]
+
 # Open file
 def open_file(root, main):
     try:
         fpath = askopenfilename(
-            filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
+            filetypes=[(fltype[0]),  (fltype[1]), (fltype[2])])
 
         if not fpath:
             return
@@ -36,7 +42,7 @@ def savef(root, main):
     try:
         fpath = asksaveasfilename(
             defaultextension=".txt",
-            filetypes=[ ("Text files", "*.txt"), ("All files", "*.*")])
+            filetypes=[(fltype[0]),  (fltype[1]), (fltype[2])])
 
         if not fpath:
             return
