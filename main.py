@@ -16,7 +16,6 @@ fltype = [
 ["All files", "*.*"]
 ]
 
-
 # Open file
 def open_file(root, main):
     try:
@@ -72,6 +71,20 @@ def new_fille(root, main):
           main.delete(1.0, END)
           root.title("New Fille")
 
+def exit(root, main):
+    ch = main.get("1.0", END).strip()
+
+    if ch == "":
+        root.destroy()
+        return
+
+    yn = messagebox.askquestion("Exit", "Do you want to save the previous file before closing?")
+
+    if yn == "yes":
+        save_file(root, main)
+
+    root.destroy()
+
 
 # Bottom panel
 frame = Frame(root)
@@ -90,7 +103,7 @@ openf.pack(expand=True, side=RIGHT, fill="x")
 main = Text(root, font=("Arial", 15), relief=SOLID)
 main.pack(expand=True, fill="both")
 
-
+root.protocol("WM_DELETE_WINDOW", lambda: exit(root, main))
 
 # Main loop
 root.mainloop()
