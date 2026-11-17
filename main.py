@@ -70,13 +70,12 @@ def new_fille(root, main):
 
     else:
           main.delete(1.0, END)
-          root.title("New Fille")        
-
+          root.title("New Fille")
 
 
 # Bottom panel
 frame = Frame(root)
-frame.pack(expand=True, fill="x", side=BOTTOM)
+frame.pack(expand=True, fill="both", side=BOTTOM)
 
 # Buttons
 save = Button(frame, text="Save File", command=lambda: save_file(root, main))
@@ -84,12 +83,14 @@ openf = Button(frame, text="Open File", command=lambda: open_file(root, main))
 new_fb =  Button(frame, text="New file", command=lambda: new_fille(root, main))
 
 new_fb.pack(expand=True, fill="x")
-save.pack(expand=True, side=BOTTOM, fill="x")
-openf.pack(expand=True, side=BOTTOM, fill="x")
+save.pack(expand=True, side=LEFT, fill="x")
+openf.pack(expand=True, side=RIGHT, fill="x")
 
 # Text editor
 main = Text(root, font=("Arial", 15), relief=SOLID)
 main.pack(expand=True, fill="both")
+
+
 
 # Main loop
 root.mainloop()
