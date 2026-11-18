@@ -16,11 +16,15 @@ fltype = [
 ["All files", "*.*"]
 ]
 
+current_file = None
+
 # Open file
 def open_file(root, main):
+    global current_file
     try:
         fpath = askopenfilename(
             filetypes=[(fltype[0]),  (fltype[1]), (fltype[2]), (fltype[3]),   (fltype[4])])
+        current_file = fpath
 
         if not fpath:
             return
@@ -36,11 +40,15 @@ def open_file(root, main):
         messagebox.showerror("Error", str(e))
 
 # Save file
-def save_file(root, main):
+def save_file_as(root, main):
+    global current_file
     try:
         fpath = asksaveasfilename(
             defaultextension=".txt",
             filetypes=[(fltype[0]),  (fltype[1]), (fltype[2]), (fltype[3]),   (fltype[4])])
+        current_file = fpath
+
+
 
         if not fpath:
             return
@@ -62,7 +70,7 @@ def new_fille(root, main):
         yn = messagebox.askquestion("?", "Do you want to save the previous file before the new one")
     
     if yn == "yes":
-        save_file(root, main)
+        save_file_as(root, main)
         main.delete(1.0, END)
         root.title("New Fille") 
 
@@ -81,23 +89,35 @@ def exit(root, main):
     yn = messagebox.askquestion("Exit", "Do you want to save the previous file before closing?")
 
     if yn == "yes":
-        save_file(root, main)
+        save_file_as(root, main)
 
     root.destroy()
 
+def savef(root, main):
+    global current_file
+
+    if current_file is None:
+        save_file_as(root, main)
+        return
+
+    with open(current_file, "w") as f:
+        f.write(main.get("1.0", END))
+    root.title(f"file {current_file} is saved")    
 
 # Bottom panel
 frame = Frame(root)
 frame.pack(expand=True, fill="both", side=BOTTOM)
 
 # Buttons
-save = Button(frame, text="Save File", command=lambda: save_file(root, main))
+save = Button(frame, text="Save File As", command=lambda: save_file_as(root, main))
 openf = Button(frame, text="Open File", command=lambda: open_file(root, main))
 new_fb =  Button(frame, text="New file", command=lambda: new_fille(root, main))
+neaw_fb =  Button(frame, text="Save  File", command=lambda: savef(root, main))
 
-new_fb.pack(expand=True, fill="x")
-save.pack(expand=True, side=LEFT, fill="x")
-openf.pack(expand=True, side=RIGHT, fill="x")
+new_fb.pack(expand=True, fill="both", side=RIGHT)
+neaw_fb.pack(expand=True, fill="both", side=LEFT)
+save.pack(expand=True, side=LEFT, fill="both")
+openf.pack(expand=True, side=RIGHT, fill="both")
 
 # Text editor
 main = Text(root, font=("Arial", 15), relief=SOLID)
