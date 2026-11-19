@@ -111,10 +111,10 @@ frame.pack(expand=True, fill="both", side=BOTTOM)
 save = Button(frame, text="Save File As", command=lambda: save_file_as(root, main))
 openf = Button(frame, text="Open File", command=lambda: open_file(root, main))
 new_fb =  Button(frame, text="New file", command=lambda: new_fille(root, main))
-neaw_fb =  Button(frame, text="Save  File", command=lambda: savef(root, main))
+save_fb =  Button(frame, text="Save  File", command=lambda: savef(root, main))
 
 new_fb.pack(expand=True, fill="both", side=RIGHT)
-neaw_fb.pack(expand=True, fill="both", side=LEFT)
+save_fb.pack(expand=True, fill="both", side=LEFT)
 save.pack(expand=True, side=LEFT, fill="both")
 openf.pack(expand=True, side=RIGHT, fill="both")
 
