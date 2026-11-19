@@ -73,8 +73,6 @@ def new_fille(root, main):
         save_file_as(root, main)
         main.delete(1.0, END)
         root.title("New Fille") 
-
-
     else:
           main.delete(1.0, END)
           root.title("New Fille")
@@ -95,14 +93,15 @@ def exit(root, main):
 
 def savef(root, main):
     global current_file
-
-    if current_file is None:
+    try:
+        if current_file is None:
+            save_file_as(root, main)
+            return
+        with open(current_file, "w") as f:
+             f.write(main.get("1.0", END))
+        root.title(f"file {current_file} is saved")     
+    except Exception as e:
         save_file_as(root, main)
-        return
-
-    with open(current_file, "w") as f:
-        f.write(main.get("1.0", END))
-    root.title(f"file {current_file} is saved")    
 
 # Bottom panel
 frame = Frame(root)
