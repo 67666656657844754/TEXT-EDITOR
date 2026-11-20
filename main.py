@@ -4,9 +4,12 @@ from tkinter.filedialog import askopenfilename, asksaveasfilename
 
 # Main window
 root = Tk()
-root.title("Text Editor")
+root.title("Text Editor")  
 root.geometry("650x550+90+90")
-root.config(bg="white")
+
+bg = "white"
+
+#root.config(bg="black")
 
 fltype = [
 ["Text files", "*.txt"],
@@ -17,13 +20,15 @@ fltype = [
 ]
 
 current_file = None
+dffontsize = 15
+dffont = "Arial"
+
 
 # Open file
 def open_file(root, main):
     global current_file
     try:
-        fpath = askopenfilename(
-            filetypes=[(fltype[0]),  (fltype[1]), (fltype[2]), (fltype[3]),   (fltype[4])])
+        fpath = askopenfilename(filetypes=[(fltype[0]),  (fltype[1]), (fltype[2]), (fltype[3]),   (fltype[4])])
         current_file = fpath
 
         if not fpath:
@@ -43,11 +48,15 @@ def open_file(root, main):
 def save_file_as(root, main):
     global current_file
     try:
-        fpath = asksaveasfilename(
-            defaultextension=".txt",
-            filetypes=[(fltype[0]),  (fltype[1]), (fltype[2]), (fltype[3]),   (fltype[4])])
-        current_file = fpath
+        fpath = asksaveasfilename( defaultextension=".txt", filetypes=[(
+            fltype[0]),  
+            (fltype[1]), 
+            (fltype[2]), 
+            (fltype[3]),   
+            (fltype[4])]
+            )
 
+        current_file = fpath
 
 
         if not fpath:
@@ -100,8 +109,37 @@ def savef(root, main):
         with open(current_file, "w") as f:
              f.write(main.get("1.0", END))
         root.title(f"file {current_file} is saved")     
-    except Exception as e:
+    except Exception:
         save_file_as(root, main)
+
+
+
+def set_font(main):
+    global usize
+    global ufont
+    main.config(font=(str(ufont.get()), usize.get()))
+
+def seting_window(root, main):
+    global usize
+    global dffont
+    global ufont
+
+    window = Toplevel(root)
+    window.geometry("200x200")
+    window.title("Settings")
+
+    usize = Entry(window)
+    ufont = Entry(window)
+
+    usize.insert(0, str(dffontsize))
+    ufont.insert(0, str(dffont))
+
+    usize.pack(pady=10)
+    ufont.pack(pady=11)
+
+    setb = Button( window, text="Chage Setting", command=lambda: set_font(main))
+    setb.pack()
+    
 
 # Bottom panel
 frame = Frame(root)
@@ -110,17 +148,22 @@ frame.pack(expand=True, fill="both", side=BOTTOM)
 # Buttons
 save = Button(frame, text="Save File As", command=lambda: save_file_as(root, main))
 openf = Button(frame, text="Open File", command=lambda: open_file(root, main))
-new_fb =  Button(frame, text="New file", command=lambda: new_fille(root, main))
-save_fb =  Button(frame, text="Save  File", command=lambda: savef(root, main))
+new_fb =  Button(frame, text="New Fille", command=lambda: new_fille(root, main))
+neaw_fb =  Button(frame, text="Save  File", command=lambda: savef(root, main))
+close =  Button(frame, text="Setting", command=lambda: seting_window(root, main))
+
 
 new_fb.pack(expand=True, fill="both", side=RIGHT)
-save_fb.pack(expand=True, fill="both", side=LEFT)
+neaw_fb.pack(expand=True, fill="both", side=LEFT)
+close.pack(expand=True, side=RIGHT, fill="both")
 save.pack(expand=True, side=LEFT, fill="both")
 openf.pack(expand=True, side=RIGHT, fill="both")
 
+
 # Text editor
-main = Text(root, font=("Arial", 15), relief=SOLID)
+main = Text(root, font=(str(dffont),  dffontsize), relief=SOLID)
 main.pack(expand=True, fill="both")
+
 
 root.protocol("WM_DELETE_WINDOW", lambda: exit(root, main))
 
